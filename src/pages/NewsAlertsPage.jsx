@@ -4,7 +4,6 @@ import { fetchAINews } from "../services/newsService";
 import {
   Bell,
   RefreshCw,
-  Newspaper,
   Calendar,
   Building2,
   Tag,
