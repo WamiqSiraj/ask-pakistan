@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ReactMarkdown from "react-markdown";
 import {
   ArrowUp,
   ArrowRight,
@@ -15,6 +16,7 @@ import {
   clearAiAnswer,
 } from "../store/servicesSlice";
 import { askGeminiAssistant } from "../services/geminiService";
+
 const examples = [
   "How do I renew my CNIC?",
   "How do I apply for a Pakistani passport?",
@@ -25,10 +27,12 @@ const examples = [
   "How do I verify my driving licence?",
   "How do I apply for a birth certificate?",
 ];
+
 export default function HeroSection() {
   const dispatch = useDispatch();
   const { searchQuery, aiAnswer, aiLoading } = useSelector((s) => s.services);
   const [lastQuestion, setLastQuestion] = useState("");
+
   const submit = async (q) => {
     const question = (q ?? searchQuery).trim();
     if (!question || aiLoading) return;
@@ -41,13 +45,14 @@ export default function HeroSection() {
     } catch {
       dispatch(
         setAiAnswer(
-          "The assistant is unavailable right now. Please try again later.",
-        ),
+          "The assistant is unavailable right now. Please try again later."
+        )
       );
     } finally {
       dispatch(setAiLoading(false));
     }
   };
+
   return (
     <section className="ap-hero">
       <div className="ap-container ap-hero-inner">
@@ -66,6 +71,7 @@ export default function HeroSection() {
           Whatever you need from public services,
           <br className="ap-desktop-break" /> start here.
         </p>
+
         <form
           className="ap-search"
           onSubmit={(e) => {
@@ -105,6 +111,7 @@ export default function HeroSection() {
             No account required · Avoid entering sensitive personal information
           </div>
         </form>
+
         <div className="ap-examples">
           <div className="ap-examples-header">
             Not sure where to start? <span>Try a question</span>
@@ -121,6 +128,7 @@ export default function HeroSection() {
             ))}
           </div>
         </div>
+
         {(aiLoading || aiAnswer) && (
           <div className="ap-response" role="status" aria-live="polite">
             <div className="ap-response-title">
@@ -141,7 +149,9 @@ export default function HeroSection() {
                 Preparing guidance...
               </p>
             ) : (
-              <div className="ap-response-text">{aiAnswer}</div>
+              <div className="ap-response-text">
+                <ReactMarkdown>{aiAnswer}</ReactMarkdown>
+              </div>
             )}
             <div className="ap-answer-warning">
               AI-generated guidance may be inaccurate or outdated. Check the
